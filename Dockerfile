@@ -1,13 +1,10 @@
 FROM tesseractshadow/tesseract4re
 
-RUN apt update -y
+RUN apt update -y && \
+  apt install poppler-utils ghostscript -y && \
+  apt install parallel -y && \
+  apt install python3 python3-pip python-tk -y
 
-# TODO when bandwidth upgrade
-
-RUN apt install git -y
-RUN apt install poppler-utils ghostscript -y
-RUN apt install parallel -y
-RUN apt install python3 python3-pip python-tk -y
 # tk stuff wants these options for headless pyplot
 COPY matplotlibrc /root/.config/matplotlib/matplotlibrc
 
