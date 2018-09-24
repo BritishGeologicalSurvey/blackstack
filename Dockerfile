@@ -27,6 +27,9 @@ WORKDIR $PDF
 
 EXPOSE 5555
 
-CMD bash -c "sleep 10; $PDF/preprocess.sh training test/WH897R_29453_000452.pdf; python3 $PDF/server.py"
+RUN chmod 775 $PDF/run.sh
+
+CMD bash -c $PDF/run.sh
+#CMD bash -c "sleep 10; cess.sh training test/WH897R_29453_000452.pdf; python3 $PDF/server.py"
 #CMD ["./preprocess.sh", "training", "test/WH897R_29453_000452.pdf"]
 

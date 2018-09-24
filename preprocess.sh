@@ -5,7 +5,7 @@ if [ $# -lt 1 ]
   exit 1
 fi
 
-if [ "$1" != "training" ] && [ "$1" != "classified" ]
+if [ "$1" != "training" ] && [ "$1" != "classified" ] && [ $1 != "ocr" ]
   then echo -e "You must provide a valid processing type. Please use training for processing data for annotation or classified for a document you'd like to run the model on."
   exit 1
 fi
@@ -29,6 +29,7 @@ cp $2 ./docs/$docname/orig.pdf
 
 ls ./docs/$1/$docname/png | grep -o '[0-9]\+' | parallel -j 4 "./process.sh $1 $docname {}"
 
+echo "$1 $docname "
 if [ "$1" == "training" ]
   then python3 summarize.py $docname
 fi
