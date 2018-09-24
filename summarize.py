@@ -23,7 +23,7 @@ if len(sys.argv) != 2:
 
 doc_id = sys.argv[1]
 
-page_paths = glob.glob('./docs/' + doc_id + '/tesseract/*.html')
+page_paths = glob.glob('./docs/training/' + doc_id + '/tesseract/*.html')
 
 pages = []
 for page_no, page in enumerate(page_paths):

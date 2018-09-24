@@ -6,6 +6,8 @@ services:
     environment:
       - PG_PASSWORD=blackstack
       - PG_USERNAME=postgres
+    links:
+      - postgres
     ports:
       - 5555:5555
 
