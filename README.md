@@ -79,6 +79,19 @@ python extract.py ./docs/classified/document
 
 The entities found will then be found in `./docs/classified/<document>/tables`
 
+## Running in docker
+
+A Dockerfile and docker-compose file are provided to simplify setup and evaluation of blackstack.
+
+### Build the container
+
+  * `docker-compose build
+
+### Run with postgres alongside
+
+ * `docker-compose up [-d]`
+
+The postgres container mounts the `.sql` files in a location which ensures they will be loaded on container startup if the schema and tables are not present.
 
 ## FAQ
 
@@ -125,3 +138,5 @@ and returns those pages with all areas tagged with their classification.
 
 #### annotator
 A flask application that runs on port 5555 that can be used for creating training data.
+
+
