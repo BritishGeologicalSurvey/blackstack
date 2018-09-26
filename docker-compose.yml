@@ -10,6 +10,15 @@ services:
       - postgres
     ports:
       - 5555:5555
+    volumes:
+      - ./docs:/app/pdf/docs
+    #entrypoint:
+    #  - ./run.sh
+    #  - training
+    entrypoint:
+      - python3
+      - summarize.py
+      - WH897R_29453_000452
 
   postgres:
     image: postgres:10.5-alpine

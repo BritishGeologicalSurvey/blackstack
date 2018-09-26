@@ -3,13 +3,17 @@ FROM tesseractshadow/tesseract4re
 RUN apt update -y && \
   apt install poppler-utils ghostscript -y && \
   apt install parallel -y && \
-  apt install python3 python3-pip python-tk -y
+  apt install python3 python3-pip python-tk -y && \
+  apt install nodejs -y
 
 # tk stuff wants these options for headless pyplot
 COPY matplotlibrc /root/.config/matplotlib/matplotlibrc
 
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
+
+RUN apt install -y npm
+RUN npm install -g hocrjs
 
 ENV PDF=/app/pdf
 ENV PYTHONPATH=$PDF
@@ -29,7 +33,7 @@ EXPOSE 5555
 
 RUN chmod 775 $PDF/run.sh
 
-CMD bash -c $PDF/run.sh
+ENTRYPOINT bash -c $PDF/run.sh
 #CMD bash -c "sleep 10; cess.sh training test/WH897R_29453_000452.pdf; python3 $PDF/server.py"
 #CMD ["./preprocess.sh", "training", "test/WH897R_29453_000452.pdf"]
 

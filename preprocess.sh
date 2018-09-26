@@ -15,7 +15,7 @@ docname="${filename%.*}"
 extension="${filename##*.}"
 
 
-#mkdir -p docs/$docname
+mkdir -p docs/$docname
 #mkdir -p docs/$docname/png
 
 mkdir -p docs/$1/$docname

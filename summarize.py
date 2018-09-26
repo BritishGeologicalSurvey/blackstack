@@ -28,7 +28,7 @@ page_paths = glob.glob('./docs/training/' + doc_id + '/tesseract/*.html')
 pages = []
 for page_no, page in enumerate(page_paths):
     # Read in each tesseract page with BeautifulSoup so we can look at the document holistically
-    with open(page) as hocr:
+    with open(page, encoding="utf8") as hocr:
         text = hocr.read()
         soup = BeautifulSoup(text, 'html.parser')
         merged_areas = helpers.merge_areas(soup.find_all('div', 'ocr_carea'))

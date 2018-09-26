@@ -538,10 +538,12 @@ def summarize_document(area_stats):
         'max_gaps': max([ len(area['gaps']) for area in area_stats ])
     }
 
+
 def merge_areas(areas):
     def process(soup):
         # Given a tesseract title string, extract the bounding box coordinates
         title = soup.get('title')
+        logging.debug(title)
         for part in title.split(';'):
             if part.strip()[0:4] == 'bbox':
                 bbox = part.replace('bbox', '').strip().split()
@@ -555,6 +557,7 @@ def merge_areas(areas):
         return {}
 
     areas = [ process(area) for area in areas ]
+    logging.debug(areas)
     merged = group_areas(areas)
 
     last_length = len(areas)
@@ -570,8 +573,6 @@ def merge_areas(areas):
         current_length = len(merged)
 
     return merged
-
-
 
 
 def group_areas(areas):
