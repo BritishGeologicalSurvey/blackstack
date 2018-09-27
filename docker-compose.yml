@@ -15,10 +15,10 @@ services:
     #entrypoint:
     #  - ./run.sh
     #  - training
-    entrypoint:
-      - python3
-      - summarize.py
-      - WH897R_29453_000452
+    #entrypoint:
+    #  - python3
+    #  - summarize.py
+    #  - WH897R_29453_000452
 
   postgres:
     image: postgres:10.5-alpine
