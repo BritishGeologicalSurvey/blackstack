@@ -476,6 +476,7 @@ def area_summary(area):
 
         for word_idx, word in enumerate(words):
             wordbbox = extractbbox(word.get('title'))
+            logging.debug(wordbbox)
 
             # Record the x coordinate of the first word of each line
             if word_idx == 0:
@@ -485,7 +486,8 @@ def area_summary(area):
             summary['word_areas'].append((wordbbox['x2'] - wordbbox['x1']) * (wordbbox['y2'] - wordbbox['y1']))
 
             for x in range(wordbbox['x1'] - summary['x1'], wordbbox['x2'] - summary['x1']):
-                summary['x_gaps'][x] = 1
+                if x >= 0 and (x < summary['x2'] - summary['x1']):
+                    summary['x_gaps'][x] = 1
 
             # If word isn't the last word in a line, get distance between word and word + 1
             if word_idx != (len(words) - 1):
@@ -557,7 +559,7 @@ def merge_areas(areas):
         return {}
 
     areas = [ process(area) for area in areas ]
-    logging.debug(areas)
+    #logging.debug(areas)
     merged = group_areas(areas)
 
     last_length = len(areas)
