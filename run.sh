@@ -14,10 +14,12 @@ do
   bash -c "./preprocess.sh $MODE ./docs/$filename"
 done
 
-for filename in `find ./docs -maxdepth 1 -name "*.jpg" -printf "%f\n"`
-do
-  echo $filename
-  bash -c "./preprocess.sh $MODE $filename"
+for f in *.{jpg,jp2,tif,TIFF}; do
+    for filename in `find ./docs -maxdepth 1 -name "$f" -printf "%f\n"`
+    do
+      echo $filename
+      bash -c "./preprocess.sh $MODE $filename"
+    done
 done
 
 
