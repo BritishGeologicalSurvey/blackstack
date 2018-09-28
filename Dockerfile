@@ -4,7 +4,8 @@ RUN apt update -y && \
   apt install poppler-utils ghostscript -y && \
   apt install parallel -y && \
   apt install python3 python3-pip python-tk -y && \
-  apt install nodejs -y
+  apt install nodejs -y && \
+  apt install imagemagick -y
 
 # tk stuff wants these options for headless pyplot
 COPY matplotlibrc /root/.config/matplotlib/matplotlibrc
@@ -24,7 +25,8 @@ COPY *py $PDF/
 COPY annotator $PDF/
 COPY config.py.env $PDF/config.py
 
-COPY test/WH897R_29453_000452.pdf $PDF/test/
+COPY test/*.pdf $PDF/test/
+COPY test/*.jpg $PDF/test/
 
 RUN mkdir out
 WORKDIR $PDF
