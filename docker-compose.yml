@@ -11,7 +11,7 @@ services:
     ports:
       - 5555:5555
     volumes:
-      - ./docs:/app/pdf/docs
+      - ./test:/app/pdf/docs
     #entrypoint:
     #  - ./run.sh
     #  - training

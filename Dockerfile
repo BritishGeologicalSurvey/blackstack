@@ -33,7 +33,7 @@ WORKDIR $PDF
 
 EXPOSE 5555
 
-RUN chmod 775 $PDF/run.sh
+RUN chmod 775 $PDF/*.sh
 
 ENTRYPOINT bash -c $PDF/run.sh
 #CMD bash -c "sleep 10; cess.sh training test/WH897R_29453_000452.pdf; python3 $PDF/server.py"

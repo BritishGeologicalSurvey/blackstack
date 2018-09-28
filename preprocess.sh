@@ -35,7 +35,7 @@ fi
 
 if [ $extension == 'jpg' ] || [ $extension == 'jp2' ] || [ $extension == 'tif' ]
 then
-    convert -alpha set -auto-level -auto-gamma -compress none $filename docs/$1/$docname/png/page_1.png
+    convert -alpha set -auto-level -auto-gamma -compress none docs/$filename docs/$1/$docname/png/page_1.png
 fi
 
 
