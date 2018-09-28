@@ -516,7 +516,7 @@ def summarize_document(area_stats):
     logging.debug(area_stats)
 
     # Don't use areas with 1 line or no words in creating summary statistics
-    return {
+    summary = {
         'word_separation_mean': np.nanmean([np.nanmean(area['word_distances']) for area in area_stats if area['words'] > 0 and area['lines'] > 1]),
         'word_separation_median': np.nanmedian([np.nanmean(area['word_distances']) for area in area_stats if area['words'] > 0 and area['lines'] > 1]),
         'word_separation_std': np.nanstd([np.nanmean(area['word_distances'])for area in area_stats if area['words'] > 0 and area['lines'] > 1]),
@@ -533,12 +533,17 @@ def summarize_document(area_stats):
         'word_height_avg_median': np.nanmedian([area['word_height_avg'] for area in area_stats if area['words'] > 0 and area['lines'] > 1]),
         'word_height_avg_std': np.nanstd([area['word_height_avg'] for area in area_stats if area['words'] > 0 and area['lines'] > 1]),
 
-    #    'line_height_avg': np.nanmean([a for a in area['line_heights'] for area in area_stats]),
-    #    'line_height_std': np.nanstd([a for a in area['line_heights'] for area in area_stats]),
         'max_area': max([ area['area'] for area in area_stats ]),
         'max_lines': max([ area['lines'] for area in area_stats ]),
         'max_gaps': max([ len(area['gaps']) for area in area_stats ])
     }
+
+    line_heights = []
+    for area in area_stats:
+        line_heights = line_heights + [a for a in area['line_heights']]
+    summary['line_height_std'] = np.nanstd(line_heights)
+    summary['line_height_avg'] = np.nanmean(line_heights)
+    return summary
 
 
 def merge_areas(areas):
