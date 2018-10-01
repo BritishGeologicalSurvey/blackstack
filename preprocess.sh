@@ -33,6 +33,12 @@ if [ $extension == 'pdf' ]
   cp $2 ./docs/$docname/orig.pdf
 fi
 
+if [ $extension == 'jpg' ] || [ $extension == 'jp2' ] || [ $extension == 'tif' ]
+then
+    convert -alpha set -auto-level -auto-gamma -compress none $filename docs/$1/$docname/png/page_1.png
+fi
+
+
 ls ./docs/$1/$docname/png | grep -o '[0-9]\+' | parallel -j 4 "./process.sh $1 $docname {}"
 
 echo "$1 $docname "
