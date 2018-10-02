@@ -22,7 +22,7 @@ WORKDIR $PDF
 
 COPY *sh $PDF/
 COPY *py $PDF/
-COPY annotator $PDF/
+COPY annotator $PDF/annotator
 COPY config.py.env $PDF/config.py
 
 COPY test/*.pdf $PDF/test/
