@@ -476,6 +476,7 @@ def area_summary(area):
 
         for word_idx, word in enumerate(words):
             wordbbox = extractbbox(word.get('title'))
+            logging.debug(wordbbox)
 
             # Record the x coordinate of the first word of each line
             if word_idx == 0:
@@ -485,7 +486,8 @@ def area_summary(area):
             summary['word_areas'].append((wordbbox['x2'] - wordbbox['x1']) * (wordbbox['y2'] - wordbbox['y1']))
 
             for x in range(wordbbox['x1'] - summary['x1'], wordbbox['x2'] - summary['x1']):
-                summary['x_gaps'][x] = 1
+                if x >= 0 and (x < summary['x2'] - summary['x1']):
+                    summary['x_gaps'][x] = 1
 
             # If word isn't the last word in a line, get distance between word and word + 1
             if word_idx != (len(words) - 1):
@@ -514,7 +516,7 @@ def summarize_document(area_stats):
     logging.debug(area_stats)
 
     # Don't use areas with 1 line or no words in creating summary statistics
-    return {
+    summary = {
         'word_separation_mean': np.nanmean([np.nanmean(area['word_distances']) for area in area_stats if area['words'] > 0 and area['lines'] > 1]),
         'word_separation_median': np.nanmedian([np.nanmean(area['word_distances']) for area in area_stats if area['words'] > 0 and area['lines'] > 1]),
         'word_separation_std': np.nanstd([np.nanmean(area['word_distances'])for area in area_stats if area['words'] > 0 and area['lines'] > 1]),
@@ -531,12 +533,17 @@ def summarize_document(area_stats):
         'word_height_avg_median': np.nanmedian([area['word_height_avg'] for area in area_stats if area['words'] > 0 and area['lines'] > 1]),
         'word_height_avg_std': np.nanstd([area['word_height_avg'] for area in area_stats if area['words'] > 0 and area['lines'] > 1]),
 
-    #    'line_height_avg': np.nanmean([a for a in area['line_heights'] for area in area_stats]),
-    #    'line_height_std': np.nanstd([a for a in area['line_heights'] for area in area_stats]),
         'max_area': max([ area['area'] for area in area_stats ]),
         'max_lines': max([ area['lines'] for area in area_stats ]),
         'max_gaps': max([ len(area['gaps']) for area in area_stats ])
     }
+
+    line_heights = []
+    for area in area_stats:
+        line_heights = line_heights + [a for a in area['line_heights']]
+    summary['line_height_std'] = np.nanstd(line_heights)
+    summary['line_height_avg'] = np.nanmean(line_heights)
+    return summary
 
 
 def merge_areas(areas):
@@ -557,7 +564,7 @@ def merge_areas(areas):
         return {}
 
     areas = [ process(area) for area in areas ]
-    logging.debug(areas)
+    #logging.debug(areas)
     merged = group_areas(areas)
 
     last_length = len(areas)

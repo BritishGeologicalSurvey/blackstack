@@ -12,19 +12,22 @@ services:
       - 5555:5555
     volumes:
       - ./test:/app/pdf/docs
-    #entrypoint:
-    #  - ./run.sh
-    #  - training
+    entrypoint:
+      - ./run.sh
+      - training
+      # -server 
     #entrypoint:
     #  - python3
     #  - summarize.py
-    #  - WH897R_29453_000452
+    # - WH897R_29453_000452
 
   postgres:
     image: postgres:10.5-alpine
     environment:
       - POSTGRES_PASSWORD=blackstack
       - POSTGRES_DB=blackstack
+      - PGDATA=/data/pg_data
     volumes:
       - ./setup:/docker-entrypoint-initdb.d/
+      - /data/pg_data:/data/pg_data
 
