@@ -1,6 +1,8 @@
 import math
 import numpy as np
 import itertools
+import logging
+
 from PIL import Image
 from shapely.geometry import Polygon
 from shapely.ops import cascaded_union
@@ -12,6 +14,8 @@ from difflib import SequenceMatcher
 from bs4 import BeautifulSoup
 
 import classifier
+
+logging.basicConfig(level=logging.DEBUG)
 
 clf = classifier.create()
 
@@ -507,6 +511,8 @@ def area_summary(area):
     return summary
 
 def summarize_document(area_stats):
+    logging.debug(area_stats)
+
     # Don't use areas with 1 line or no words in creating summary statistics
     return {
         'word_separation_mean': np.nanmean([np.nanmean(area['word_distances']) for area in area_stats if area['words'] > 0 and area['lines'] > 1]),
@@ -525,17 +531,19 @@ def summarize_document(area_stats):
         'word_height_avg_median': np.nanmedian([area['word_height_avg'] for area in area_stats if area['words'] > 0 and area['lines'] > 1]),
         'word_height_avg_std': np.nanstd([area['word_height_avg'] for area in area_stats if area['words'] > 0 and area['lines'] > 1]),
 
-        'line_height_avg': np.nanmean([a for a in area['line_heights'] for area in area_stats]),
-        'line_height_std': np.nanstd([a for a in area['line_heights'] for area in area_stats]),
+    #    'line_height_avg': np.nanmean([a for a in area['line_heights'] for area in area_stats]),
+    #    'line_height_std': np.nanstd([a for a in area['line_heights'] for area in area_stats]),
         'max_area': max([ area['area'] for area in area_stats ]),
         'max_lines': max([ area['lines'] for area in area_stats ]),
         'max_gaps': max([ len(area['gaps']) for area in area_stats ])
     }
 
+
 def merge_areas(areas):
     def process(soup):
         # Given a tesseract title string, extract the bounding box coordinates
         title = soup.get('title')
+        logging.debug(title)
         for part in title.split(';'):
             if part.strip()[0:4] == 'bbox':
                 bbox = part.replace('bbox', '').strip().split()
@@ -549,6 +557,7 @@ def merge_areas(areas):
         return {}
 
     areas = [ process(area) for area in areas ]
+    logging.debug(areas)
     merged = group_areas(areas)
 
     last_length = len(areas)
@@ -564,8 +573,6 @@ def merge_areas(areas):
         current_length = len(merged)
 
     return merged
-
-
 
 
 def group_areas(areas):
