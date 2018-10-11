@@ -15,6 +15,6 @@ build_run:
   script:
     - docker build -t gdd/blackstack .
     - mkdir docs; cp test/*pdf docs/
-    - docker run -v $PWD/docs:app/pdf/docs gdd/blackstack 
+    - docker run -v $PWD/docs:/app/pdf/docs gdd/blackstack 
     - ls ./docs/ocr/WH897R_29453_000452/tesseract/page_1.html
 
