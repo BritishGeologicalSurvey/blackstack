@@ -26,7 +26,8 @@ COPY annotator $PDF/annotator
 COPY config.py.env $PDF/config.py
 
 COPY test/*.pdf $PDF/test/
-COPY test/*.jpg $PDF/test/
+
+# COPY test/*.jpg $PDF/test/
 
 RUN mkdir out
 WORKDIR $PDF
